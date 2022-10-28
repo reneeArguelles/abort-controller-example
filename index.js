@@ -7,13 +7,17 @@ const createPromise = (sig) => {
   }
 
   return new Promise((resolve, reject) => {
+    let counter = 0
+    const interval = setInterval(() => {
+      // eslint-disable-next-line no-plusplus
+      console.log(`count: ${counter++}`)
+    }, 1000)
+
     console.log('Promise Started ...')
     sig.addEventListener('abort', () => {
+      clearInterval(interval)
       reject(new Error('Promise aborted'))
     })
-    setTimeout(() => {
-      resolve()
-    }, 5000)
   })
 }
 
@@ -23,6 +27,6 @@ createPromise(signal)
 
 setTimeout(() => {
   controller.abort()
-}, 1000)
+}, 5000)
 
 process.stdin.resume()
