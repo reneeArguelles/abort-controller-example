@@ -3,7 +3,7 @@ const { signal } = controller
 
 const createPromise = (sig) => {
   if (sig.aborted) {
-    return Promise.reject(new Error('Promise aborted'))
+    return Promise.reject(new Error('Promise aborted before created'))
   }
 
   return new Promise((resolve, reject) => {
@@ -20,6 +20,8 @@ const createPromise = (sig) => {
     })
   })
 }
+
+controller.abort()
 
 createPromise(signal)
   .then(() => console.log('Promise resolved'))
